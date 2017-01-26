@@ -1,18 +1,16 @@
 package io.github.ngokimphu.pressbutton.actions;
 
 import io.github.ngokimphu.pressbutton.ModuleInfo;
-import io.github.ngokimphu.pressbutton.access.GuiContainerReflection;
+import io.github.ngokimphu.pressbutton.access.GuiScreenHelper;
 import net.eq2online.macros.scripting.api.APIVersion;
 import net.eq2online.macros.scripting.api.IMacro;
 import net.eq2online.macros.scripting.api.IMacroAction;
 import net.eq2online.macros.scripting.api.IReturnValue;
 import net.eq2online.macros.scripting.api.IScriptActionProvider;
+import net.eq2online.macros.scripting.api.ReturnValue;
 import net.eq2online.macros.scripting.parser.ScriptAction;
 import net.eq2online.macros.scripting.parser.ScriptContext;
 import net.eq2online.macros.scripting.parser.ScriptCore;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.ClickType;
 
 /**
  * This is an example script action. It registers itself in the MAIN context and
@@ -58,20 +56,29 @@ public class ScriptActionPressButton extends ScriptAction {
     @Override
     public IReturnValue execute(IScriptActionProvider provider, IMacro macro, IMacroAction instance, String rawParams,
             String[] params) {
-
-        int slotId = ScriptCore.tryParseInt(provider.expand(macro, params[0], false), 0);
-        GuiContainer guiContainer = (GuiContainer) Minecraft.getMinecraft().currentScreen;
-        GuiContainerReflection.handleMouseClick(guiContainer, guiContainer.inventorySlots.getSlot(slotId), slotId, 0,
-                ClickType.QUICK_MOVE);
-
         if (params.length < 1) {
             return null;
+        }
+
+        int id = ScriptCore.tryParseInt(provider.expand(macro, params[0], false), 0),
+                button = params.length < 2 || provider.expand(macro, params[1], false).startsWith("l") ? 0 : 1;
+        switch (GuiScreenHelper.screenButtonClick(id, button)) {
+        case Integer.MAX_VALUE:
+            provider.actionAddChatMessage("Invalid button ID " + id);
+            break;
+        case -2:
+            provider.actionAddChatMessage("Exception thrown");
+            break;
+        case 0:
+            return new ReturnValue(true);
+        default:
+            return new ReturnValue(false);
         }
         return null;
     }
 
     /**
-     * Called after this action is initialised, the action should register with
+     * Called after this action is initialized, the action should register with
      * the script core.
      * 
      * @see net.eq2online.macros.scripting.parser.ScriptAction#onInit()
