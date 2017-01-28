@@ -41,7 +41,7 @@ public final class GuiScreenHelper {
                     return Integer.MAX_VALUE;
                 }
                 Container enchantment = ((GuiEnchantment) screen).inventorySlots;
-                if (enchantment.enchantItem(Minecraft.getMinecraft().thePlayer, buttonNumber)) {
+                if (enchantment.enchantItem(Minecraft.getMinecraft().player, buttonNumber)) {
                     Minecraft.getMinecraft().playerController.sendEnchantPacket(enchantment.windowId, buttonNumber);
                     return 0;
                 }
