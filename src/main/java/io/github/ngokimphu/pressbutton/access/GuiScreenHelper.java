@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import com.mumfrey.liteloader.util.ObfuscationUtilities;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiEnchantment;
@@ -16,9 +18,12 @@ public final class GuiScreenHelper {
 
     static {
         try {
-            buttonList = GuiScreen.class.getDeclaredField("buttonList");
+            buttonList = GuiScreen.class
+                    .getDeclaredField(ObfuscationUtilities.getObfuscatedFieldName("buttonList", "n", "field_146292_n"));
             buttonList.setAccessible(true);
-            actionPerformed = GuiScreen.class.getDeclaredMethod("actionPerformed", GuiButton.class);
+            actionPerformed = GuiScreen.class.getDeclaredMethod(
+                    ObfuscationUtilities.getObfuscatedFieldName("actionPerformed", "a", "func_146284_a"),
+                    GuiButton.class);
             actionPerformed.setAccessible(true);
         } catch (Exception e) {
             e.printStackTrace();
