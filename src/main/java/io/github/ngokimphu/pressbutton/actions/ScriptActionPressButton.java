@@ -1,7 +1,7 @@
 package io.github.ngokimphu.pressbutton.actions;
 
 import io.github.ngokimphu.pressbutton.ModuleInfo;
-import io.github.ngokimphu.pressbutton.access.GuiScreenHelper;
+import io.github.ngokimphu.pressbutton.access.GuiScreenAccess;
 import net.eq2online.macros.scripting.api.APIVersion;
 import net.eq2online.macros.scripting.api.IMacro;
 import net.eq2online.macros.scripting.api.IMacroAction;
@@ -13,24 +13,20 @@ import net.eq2online.macros.scripting.parser.ScriptContext;
 import net.eq2online.macros.scripting.parser.ScriptCore;
 
 /**
- * This is an example script action. It registers itself in the MAIN context and
- * simply emits the text string "Hello World" when invoked.
- * 
- * <p>
- * The {@link APIVersion} annotation must match the target API version for this
- * module, we provide a central location to update the version by storing it in
- * the {@link ModuleInfo} class.
- * </p>
+ * pressbutton action to press a button in a GuiScreen (enchant, villager...)
+ * Syntax: pressbutton(buttonId, mouseButton) buttonId: id of the button in the
+ * GUI mouseButton: any string not beginning with l for right, left otherwise
  */
 @APIVersion(ModuleInfo.API_VERSION)
 public class ScriptActionPressButton extends ScriptAction {
 
-    /**
-     * Initialization
-     */
     public ScriptActionPressButton() {
         // Context is the context for this action, action name must be lowercase
-        super(ScriptContext.MAIN, "pressbutton");
+        this(ScriptContext.MAIN);
+    }
+
+    public ScriptActionPressButton(ScriptContext context) {
+        super(context, "pressbutton");
     }
 
     /**
@@ -45,7 +41,11 @@ public class ScriptActionPressButton extends ScriptAction {
     }
 
     /**
-     * Execute the action
+     * Execute the pressbutton action
+     * 
+     * @param params
+     *            buttonId (id of the button in the GUI) and mouseButton (any
+     *            string not beginning with l for right, left otherwise)
      * 
      * @see net.eq2online.macros.scripting.parser.ScriptAction#execute(
      *      net.eq2online.macros.scripting.api.IScriptActionProvider,
@@ -62,7 +62,7 @@ public class ScriptActionPressButton extends ScriptAction {
 
         int id = ScriptCore.tryParseInt(provider.expand(macro, params[0], false), 0),
                 button = params.length < 2 || provider.expand(macro, params[1], false).startsWith("l") ? 0 : 1;
-        switch (GuiScreenHelper.screenButtonClick(id, button)) {
+        switch (GuiScreenAccess.screenButtonClick(id, button)) {
         case Integer.MAX_VALUE:
             provider.actionAddChatMessage("Invalid button ID " + id);
             break;

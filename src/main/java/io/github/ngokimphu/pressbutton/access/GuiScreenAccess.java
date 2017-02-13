@@ -12,7 +12,7 @@ import net.minecraft.client.gui.GuiEnchantment;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.inventory.Container;
 
-public final class GuiScreenHelper {
+public final class GuiScreenAccess {
     private static Field buttonList;
     private static Method actionPerformed;
 
