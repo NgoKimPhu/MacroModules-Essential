@@ -1,6 +1,6 @@
 package io.github.ngokimphu.pressbutton.actions;
 
-import io.github.ngokimphu.pressbutton.ModuleInfo;
+import io.github.ngokimphu.ModuleInfo;
 import io.github.ngokimphu.pressbutton.access.GuiScreenAccess;
 import net.eq2online.macros.scripting.api.APIVersion;
 import net.eq2online.macros.scripting.api.IMacro;

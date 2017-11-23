@@ -1,4 +1,4 @@
-package io.github.ngokimphu.pressbutton;
+package io.github.ngokimphu;
 
 /**
  * Shared information for this module
