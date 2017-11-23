@@ -32,7 +32,7 @@ public class ScriptActionGetProp extends ScriptAction {
         this(ScriptContext.MAIN);
     }
 
-    public ScriptActionGetProp(ScriptContext context) {
+    public ScriptActionGetProp(final ScriptContext context) {
         super(context, "getprop");
     }
 
@@ -49,7 +49,7 @@ public class ScriptActionGetProp extends ScriptAction {
 
     /**
      * Execute the getprop action
-     * 
+     *
      * @param params x, y, z Minecraft-style coordination propname (name of the
      *            property whose value is to be retrieved)
      *            <&propvalue> reference to a string var to store the result
@@ -61,29 +61,29 @@ public class ScriptActionGetProp extends ScriptAction {
      *      java.lang.String[])
      */
     @Override
-    public IReturnValue execute(IScriptActionProvider provider, IMacro macro, IMacroAction instance,
-            String rawParams, String[] params) {
+    public IReturnValue execute(final IScriptActionProvider provider, final IMacro macro,
+            final IMacroAction instance, final String rawParams, final String[] params) {
         if (params.length < 4) {
             provider.actionAddChatMessage(
                     LOG_PREFIX + "At least 4 parameters are required: x, y, z, and propName");
             return null;
         }
 
-        WorldClient theWorld = this.mc.world;
-        EntityPlayerSP thePlayer = this.mc.player;
+        final WorldClient theWorld = this.mc.world;
+        final EntityPlayerSP thePlayer = this.mc.player;
         if (theWorld != null && thePlayer != null) {
-            int xPos = this.getPosition(provider, macro, params[0], thePlayer.posX);
-            int yPos = this.getPosition(provider, macro, params[1], thePlayer.posY);
-            int zPos = this.getPosition(provider, macro, params[2], thePlayer.posZ);
-            BlockPos blockPos = new BlockPos(xPos, yPos, zPos);
-            IBlockState blockState = theWorld.getBlockState(blockPos);
+            final int xPos = this.getPosition(provider, macro, params[0], thePlayer.posX);
+            final int yPos = this.getPosition(provider, macro, params[1], thePlayer.posY);
+            final int zPos = this.getPosition(provider, macro, params[2], thePlayer.posZ);
+            final BlockPos blockPos = new BlockPos(xPos, yPos, zPos);
+            final IBlockState blockState = theWorld.getBlockState(blockPos);
 
-            for (IProperty<?> property : blockState.getPropertyKeys()) {
+            for (final IProperty<?> property : blockState.getPropertyKeys()) {
                 if (property.getName().equalsIgnoreCase(provider.expand(macro, params[3], false))) {
-                    ReturnValue retVal = new ReturnValue(blockState.getValue(property).toString());
+                    final ReturnValue retVal = new ReturnValue(blockState.getValue(property).toString());
 
                     if (params.length > 4) {
-                        String propValueVar = provider.expand(macro, params[4], false).toLowerCase();
+                        final String propValueVar = provider.expand(macro, params[4], false).toLowerCase();
                         provider.setVariable(macro, propValueVar, retVal);
                     }
 
@@ -100,9 +100,10 @@ public class ScriptActionGetProp extends ScriptAction {
         return null;
     }
 
-    private int getPosition(IScriptActionProvider provider, IMacro macro, String param, double currentPos) {
-        String sPos = provider.expand(macro, param, false);
-        boolean isRelative = sPos.length() > 0 && sPos.charAt(0) == '~';
+    private int getPosition(final IScriptActionProvider provider, final IMacro macro, final String param,
+            final double currentPos) {
+        final String sPos = provider.expand(macro, param, false);
+        final boolean isRelative = sPos.length() > 0 && sPos.charAt(0) == '~';
         return (isRelative ? MathHelper.floor(currentPos) : 0)
                 + ScriptCore.tryParseInt(isRelative ? sPos.substring(1) : sPos, 0);
     }
@@ -110,7 +111,7 @@ public class ScriptActionGetProp extends ScriptAction {
     /**
      * Called after this action is initialized, the action should register with
      * the script core.
-     * 
+     *
      * @see net.eq2online.macros.scripting.parser.ScriptAction#onInit()
      */
     @Override

@@ -21,7 +21,7 @@ import net.minecraft.util.NonNullList;
 public class SlotClicker extends SlotHelper {
     private final Minecraft mc;
 
-    public SlotClicker(Macros macros, Minecraft mc) {
+    public SlotClicker(final Macros macros, final Minecraft mc) {
         super(macros, mc);
         this.mc = mc;
     }
@@ -36,8 +36,8 @@ public class SlotClicker extends SlotHelper {
                 return;
             }
 
-            GuiContainer ex = this.getGuiContainer();
-            Container slots = ex.inventorySlots;
+            final GuiContainer ex = this.getGuiContainer();
+            final Container slots = ex.inventorySlots;
             Slot slot;
             if (ex instanceof GuiContainerCreative) {
                 if (slotNumber < 45) {
@@ -52,7 +52,7 @@ public class SlotClicker extends SlotHelper {
                         return;
                     }
 
-                    int slot2 = slotNumber / 100 - 1;
+                    final int slot2 = slotNumber / 100 - 1;
                     ((IGuiContainerCreative) ex).setCreativeTab(CreativeTabs.CREATIVE_TAB_ARRAY[slot2]);
                     slotNumber -= (slot2 + 1) * 100;
                     if (!scrollContainerTo((GuiContainerCreative) ex, slotNumber)) {
@@ -66,7 +66,7 @@ public class SlotClicker extends SlotHelper {
                 slot = slotNumber == -999 ? null : slots.getSlot(slotNumber);
                 ((IGuiContainer) ex).mouseClick(slot, slotNumber, middleButton, ClickType.CLONE);
             }
-        } catch (Exception arg7) {
+        } catch (final Exception arg7) {
             arg7.printStackTrace();
         }
 
@@ -77,12 +77,12 @@ public class SlotClicker extends SlotHelper {
                 && this.mc.player.inventory.mainInventory != null;
     }
 
-    private static boolean scrollContainerTo(GuiContainerCreative containerGui, int slotNumber)
+    private static boolean scrollContainerTo(final GuiContainerCreative containerGui, final int slotNumber)
             throws IllegalArgumentException, SecurityException {
         float currentScroll = 0.0F;
-        int lastInventoryScroll = setScrollPosition(containerGui, currentScroll);
-        NonNullList<?> itemsList = ((IContainerCreative) containerGui.inventorySlots).getItemsList();
-        float scrollIncrement = (float) (1.0D / (itemsList.size() / 9 - 5 + 1));
+        final int lastInventoryScroll = setScrollPosition(containerGui, currentScroll);
+        final NonNullList<?> itemsList = ((IContainerCreative) containerGui.inventorySlots).getItemsList();
+        final float scrollIncrement = (float) (1.0D / (itemsList.size() / 9 - 5 + 1));
 
         int inventoryScroll;
         do {
@@ -97,17 +97,18 @@ public class SlotClicker extends SlotHelper {
         return isInRange(slotNumber, inventoryScroll, 45);
     }
 
-    private static boolean isInRange(int value, int start, int rangeLength) {
+    private static boolean isInRange(final int value, final int start, final int rangeLength) {
         return value >= start && value < start + rangeLength;
     }
 
-    private static int getCreativeInventoryScroll(GuiContainerCreative containerGui) {
+    private static int getCreativeInventoryScroll(final GuiContainerCreative containerGui) {
         try {
-            InventoryBasic ex = StaticFields.creativeInventory.get();
-            ItemStack firstSlotStack = ex.getStackInSlot(0);
-            NonNullList<?> itemsList = ((IContainerCreative) containerGui.inventorySlots).getItemsList();
+            final InventoryBasic ex = StaticFields.creativeInventory.get();
+            final ItemStack firstSlotStack = ex.getStackInSlot(0);
+            final NonNullList<?> itemsList = ((IContainerCreative) containerGui.inventorySlots)
+                    .getItemsList();
             return itemsList.indexOf(firstSlotStack);
-        } catch (Exception arg3) {
+        } catch (final Exception arg3) {
             arg3.printStackTrace();
             return 0;
         }

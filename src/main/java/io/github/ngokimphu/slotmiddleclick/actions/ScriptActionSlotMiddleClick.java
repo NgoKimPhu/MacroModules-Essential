@@ -24,7 +24,7 @@ public class ScriptActionSlotMiddleClick extends ScriptAction {
         this(ScriptContext.MAIN);
     }
 
-    public ScriptActionSlotMiddleClick(ScriptContext context) {
+    public ScriptActionSlotMiddleClick(final ScriptContext context) {
         super(context, "slotmiddleclick");
         this.slotClicker = new SlotClicker(this.macros, this.mc);
     }
@@ -42,16 +42,16 @@ public class ScriptActionSlotMiddleClick extends ScriptAction {
 
     /**
      * Execute the slotmiddleclick action
-     * 
+     *
      * @param params 1 only parameter of slot number
      * @see net.eq2online.macros.scripting.actions.game.ScriptActionSlotClick#execute
      * @see net.eq2online.macros.scripting.parser.ScriptAction#execute
      */
     @Override
-    public IReturnValue execute(IScriptActionProvider provider, IMacro macro, IMacroAction instance,
-            String rawParams, String[] params) {
+    public IReturnValue execute(final IScriptActionProvider provider, final IMacro macro,
+            final IMacroAction instance, final String rawParams, final String[] params) {
         if (params.length > 0) {
-            int slotNumber = ScriptCore.tryParseInt(provider.expand(macro, params[0], false), 0);
+            final int slotNumber = ScriptCore.tryParseInt(provider.expand(macro, params[0], false), 0);
             this.slotClicker.containerSlotMiddleClick(slotNumber);
         }
 
@@ -61,7 +61,7 @@ public class ScriptActionSlotMiddleClick extends ScriptAction {
     /**
      * Called after this action is initialized, the action should register with
      * the script core.
-     * 
+     *
      * @see net.eq2online.macros.scripting.parser.ScriptAction#onInit()
      */
     @Override

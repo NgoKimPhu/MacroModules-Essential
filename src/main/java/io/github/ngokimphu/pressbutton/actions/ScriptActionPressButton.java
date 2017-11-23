@@ -25,7 +25,7 @@ public class ScriptActionPressButton extends ScriptAction {
         this(ScriptContext.MAIN);
     }
 
-    public ScriptActionPressButton(ScriptContext context) {
+    public ScriptActionPressButton(final ScriptContext context) {
         super(context, "pressbutton");
     }
 
@@ -42,11 +42,9 @@ public class ScriptActionPressButton extends ScriptAction {
 
     /**
      * Execute the pressbutton action
-     * 
-     * @param params
-     *            buttonId (id of the button in the GUI) and mouseButton (any
+     *
+     * @param params buttonId (id of the button in the GUI) and mouseButton (any
      *            string not beginning with l for right, left otherwise)
-     * 
      * @see net.eq2online.macros.scripting.parser.ScriptAction#execute(
      *      net.eq2online.macros.scripting.api.IScriptActionProvider,
      *      net.eq2online.macros.scripting.api.IMacro,
@@ -54,14 +52,15 @@ public class ScriptActionPressButton extends ScriptAction {
      *      java.lang.String[])
      */
     @Override
-    public IReturnValue execute(IScriptActionProvider provider, IMacro macro, IMacroAction instance, String rawParams,
-            String[] params) {
+    public IReturnValue execute(final IScriptActionProvider provider, final IMacro macro,
+            final IMacroAction instance, final String rawParams, final String[] params) {
         if (params.length < 1) {
             return null;
         }
 
-        int id = ScriptCore.tryParseInt(provider.expand(macro, params[0], false), 0),
-                button = params.length < 2 || provider.expand(macro, params[1], false).startsWith("l") ? 0 : 1;
+        final int id = ScriptCore.tryParseInt(provider.expand(macro, params[0], false), 0),
+                button = params.length < 2 || provider.expand(macro, params[1], false).startsWith("l") ? 0
+                        : 1;
         switch (GuiScreenAccess.screenButtonClick(id, button)) {
         case Integer.MAX_VALUE:
             provider.actionAddChatMessage("Invalid button ID " + id);
@@ -80,7 +79,7 @@ public class ScriptActionPressButton extends ScriptAction {
     /**
      * Called after this action is initialized, the action should register with
      * the script core.
-     * 
+     *
      * @see net.eq2online.macros.scripting.parser.ScriptAction#onInit()
      */
     @Override
