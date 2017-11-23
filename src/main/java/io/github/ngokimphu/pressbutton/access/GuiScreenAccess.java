@@ -53,7 +53,7 @@ public final class GuiScreenAccess {
                 return Integer.MAX_VALUE;
             }
             final GuiButton button = buttonList.get(buttonNumber);
-            if (!button.mousePressed(Minecraft.getMinecraft(), button.xPosition, button.yPosition)) {
+            if (!button.mousePressed(Minecraft.getMinecraft(), button.x, button.y)) {
                 return -1;
             }
             actionPerformed.invoke(screen, button);

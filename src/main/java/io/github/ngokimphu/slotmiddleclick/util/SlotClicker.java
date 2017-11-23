@@ -1,11 +1,9 @@
 package io.github.ngokimphu.slotmiddleclick.util;
 
-import net.eq2online.macros.compatibility.PrivateFields;
-import net.eq2online.macros.compatibility.PrivateFields.StaticFields;
 import net.eq2online.macros.core.Macros;
-import net.eq2online.macros.core.overlays.IContainerCreative;
-import net.eq2online.macros.core.overlays.IGuiContainer;
-import net.eq2online.macros.core.overlays.IGuiContainerCreative;
+import net.eq2online.macros.core.mixin.IContainerCreative;
+import net.eq2online.macros.core.mixin.IGuiContainer;
+import net.eq2online.macros.core.mixin.IGuiContainerCreative;
 import net.eq2online.macros.gui.helpers.SlotHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -42,8 +40,7 @@ public class SlotClicker extends SlotHelper {
             if (ex instanceof GuiContainerCreative) {
                 if (slotNumber < 45) {
                     ((IGuiContainerCreative) ex).setCreativeTab(CreativeTabs.INVENTORY);
-                    slot = slotNumber < 5
-                            ? (Slot) PrivateFields.creativeBinSlot.get((GuiContainerCreative) ex)
+                    slot = slotNumber < 5 ? ((IGuiContainerCreative) ex).getBinSlot()
                             : slots.getSlot(slotNumber);
                 } else if (slotNumber < 54) {
                     slot = slots.getSlot(slotNumber);
@@ -103,7 +100,7 @@ public class SlotClicker extends SlotHelper {
 
     private static int getCreativeInventoryScroll(final GuiContainerCreative containerGui) {
         try {
-            final InventoryBasic ex = StaticFields.creativeInventory.get();
+            final InventoryBasic ex = IGuiContainerCreative.getCreativeInventory();
             final ItemStack firstSlotStack = ex.getStackInSlot(0);
             final NonNullList<?> itemsList = ((IContainerCreative) containerGui.inventorySlots)
                     .getItemsList();
